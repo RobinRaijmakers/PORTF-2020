@@ -10,6 +10,10 @@ www.initial-sounds.com
 www.zwlsoftware.com 
 https://github.com/RobinRaijmakers/PORTF-2020/blob/main/c_APIfunctions.php
 
+** javascript / jquery **
+https://github.com/RobinRaijmakers/PORTF-2020/blob/main/popup.js
+
+
 ** PYTHON **
 https://github.com/RobinRaijmakers/PORTF-2020/blob/main/seleniumbot
 
