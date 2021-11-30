@@ -1,0 +1,267 @@
+
+import time 
+import html
+from selenium import webdriver
+import undetected_chromedriver as uc
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
+import re 
+from lxml import html 
+from lxml.etree import tostring as htmlstring
+import keyboard 
+import json 
+import requests
+from selenium.webdriver.chrome.options import Options
+ 
+
+ 
+useFunction = 'none'
+# ZWL Software - ZALANDO BOT v0.1   || NL
+ 
+
+
+print("connecting bot..")
+time.sleep(1)
+with open('key.txt') as f:
+    for line in f:
+        key = line.strip()
+
+f.close()
+
+userdata = {
+             
+            'product': 'zalandobot_sneakers',
+            'key': key
+            
+}
+ 
+headers = {'Content-type': 'application/json', 'Accept': 'text/plain'} 
+RESapi = requests.post('http://zwlsoftware.com/api', params=userdata, headers=headers, timeout=15, verify=True)
+userdata = json.loads(RESapi.text)
+access = 0   #check if user has paid / or to many orders on plan 
+
+print('welcome: ' , userdata[0]["email"])
+
+if access == 1:
+    print('Plan on this product has reached max orders. Buy an upgrade to use this product again.  ')
+    quit()
+
+time.sleep(.5)
+print("checking for updates ...")
+time.sleep(.1)
+print("Refreshing data..")
+
+time.sleep(.2)
+print("")
+
+def QuitDriver():
+    print('Bot disabled.')
+    driver.quit()
+    quit()
+    time.sleep(1)
+
+agreement = input("[PLEASE READ] Hello user, \n thanks for using zalando bot by autoxize. Please enter all fields to make the bot work like it should.\n WARNING: we do not save any login data or bank information. All data is only being run in the bots program and is earrased once the bot is shut down.  \n Bank login is not mandatory but for most E-commerce stores putting an item in the shoppingcart does not claim the product. Its the one who buys it first will own a product. \n type 'OK' to start the bot: ")
+autocheckout = input('Do you want to have autocheckout enabled? (PayPal only) [y] / [n]: ')
+zalandoEM = input("Enter zalando login email: ")
+if zalandoEM == '':
+    print("no zalando email entered..")
+    quit()
+
+zalandoPASS = input("Enter zalando password: ")
+if zalandoPASS == '':
+    print("no zalando password entered..")
+    quit()
+
+if autocheckout == 'y':
+    PaypalEmail = input("Enter your PayPal Email: ")
+    PaypalPassword = input("Enter your PayPal Password: ")
+checkfor = input("Type the size to target (european sizes only): ")
+
+refreshrate = float(input("Refresh rate (seconds): "))
+
+
+
+time.sleep(.5)
+print("")
+time.sleep(1)
+print("")
+print("ZALANDO BOT IS NOW DEPLOYED | v0.01")
+print("")
+
+print("Keep the application running in the background, an email notification will be sent once the product inside the cart or paid.")
+time.sleep(1)
+print("")
+
+
+print("report bugs at: support@autoxize.com")
+time.sleep(1)
+
+sizes = [] 
+nonAvailableSizes = [] 
+
+#CHROME
+WINDOW_SIZE = "800,1000"
+
+
+
+# def CheckItem():
+# def ExecuteItem():
+
+ 
+
+chrome_options = Options()
+# chrome_options.add_argument("--headless")  
+chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--disable-gpu')
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-impl-side-painting")
+chrome_options.add_argument("--disable-setuid-sandbox")
+chrome_options.add_argument("--disable-seccomp-filter-sandbox")
+chrome_options.add_argument("--disable-breakpad")
+chrome_options.add_argument("--disable-client-side-phishing-detection")
+chrome_options.add_argument("--disable-cast")
+chrome_options.add_argument("--disable-cast-streaming-hw-encoding")
+chrome_options.add_argument("--disable-cloud-import")
+chrome_options.add_argument("--disable-popup-blocking")
+chrome_options.add_argument("--ignore-certificate-errors")
+chrome_options.add_argument("--disable-session-crashed-bubble")
+chrome_options.add_argument("--disable-ipv6")
+chrome_options.add_argument("--allow-http-screen-capture")
+chrome_options.add_argument("--start-maximized")
+
+     
+
+driver = webdriver.Chrome(executable_path='.\\Driver\\chromedriver_95\\chromedriver.exe',options=chrome_options)
+url = 'https://www.zalando.be/new-balance-5740-unisex-sneakers-laag-henna-ne215o07d-t11.html'
+# url = 'http://localhost/botme'
+driver.get(url)
+
+ 
+
+def OrderProduct():
+    driver.get('https://www.zalando.be/cart/')
+    time.sleep(1)
+    orderbtn = driver.find_element_by_xpath('//button[@class="z-1-button z-coast-base-primary-accessible z-coast-base__totals-tile__button-checkout z-1-button--primary z-1-button--button"]')
+    orderbtn.click()
+    try:
+        delay = 5
+        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'login.email')))
+        loginInp = driver.find_element_by_id('login.email')
+        passInp = driver.find_element_by_id('login.secret')
+
+        loginInp.send_keys(zalandoEM) 
+        time.sleep(.2)
+        passInp.send_keys(zalandoPASS)
+        loginbtn = driver.find_element_by_xpath("//button[@aria-label='Inloggen']")
+        loginbtn.click()    
+        time.sleep(1.5)
+        AdressHref = driver.find_element_by_id('delivery-destination-tab-0')
+        AdressHref.click()
+        nextBtn = driver.find_element_by_xpath("//button[@data-id='z-coast-fjord_proceedToPayment'")
+        nextBtn.click()
+        # Adress1 = driver.find_element_by_id('street-address')
+    
+    except TimeoutException:
+        print("Sorry! loading took too much time, Check your internet connection.")
+  
+   
+
+ 
+ 
+def Search():
+
+
+
+    try:
+        delay = 3 
+        if firstrun == True:
+            myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'z-navicat-header-props')))
+            print ("Page loaded.. waiting for cookie banner")
+
+        
+        time.sleep(3)
+        myElem2 = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'uc-btn-accept-banner')))
+        cookie = driver.find_element_by_id('uc-btn-accept-banner') 
+        cookie.click()
+        formbtn = driver.find_element_by_id('picker-trigger')
+        formbtn.click()
+        time.sleep(.4)
+        sizesform = driver.find_element_by_name('size-picker-form')
+        s = sizesform.find_elements_by_xpath("./div/div")
+        
+        for div in s:
+            sizes.append(div.text)
+            #print(div.get_attribute('data-is-selected'))
+           
+            if re.search(str(checkfor), div.text):
+
+                etitem = re.findall(r'^\D*(\d.+)', div.text)[0]
+                getitem =  float(re.sub("[^0-9.]", "", etitem))
+
+             
+                
+
+                if getitem.is_integer():
+                    if getitem == int(checkfor):
+
+            
+                        if re.search("Geef seintje", str(div.text)):
+                            print("Item is currently not buyable. Refreshing page in: " , refreshrate , " seconds. ")   
+                            time.sleep(refreshrate)
+                            driver.refresh()
+                            Search()
+                            break               
+
+                        else:
+                            div.click() 
+                            orderbtn = driver.find_element_by_xpath("//button[@aria-label='Bestel nu!']")
+                            orderbtn.click()               
+                            print('ordering->', checkfor , ' now.. One moment')
+
+                            OrderProduct()
+
+                            break                    
+
+                else:
+                    if getitem == float(checkfor):
+                        
+                        if re.search("Geef seintje", str(div.text)):
+                            
+                            print("Item is currently not buyable. Refreshing page in: " , refreshrate , " seconds. ")   
+                            time.sleep(refreshrate)
+                            driver.refresh()
+                            Search()
+                            break   
+
+                        else:
+                            div.click() 
+                            orderbtn = driver.find_element_by_xpath("//button[@aria-label='Bestel nu!']")
+                            orderbtn.click()      
+                            print('ordering->', checkfor , ' now.. One moment')  
+                          
+                              
+
+
+                            OrderProduct()
+
+                            break   
+     
+                  
+            
+
+ 
+        
+
+
+
+    except TimeoutException:
+        print ("page Loading took too much time! check your internet connection")
+        StartNewSearch()
+
+
+ 
+Search()
